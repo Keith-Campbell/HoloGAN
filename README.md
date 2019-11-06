@@ -36,7 +36,7 @@ Cats: Dataset and pre-process code https://github.com/AlexiaJM/RelativisticGAN/t
 - To run the training of HoloGAN
 
 ```	
-python main.py ./config_HoloGAN.json --dataset celebA --input_fname_pattern ".jpg" --crop input_height 108--output_height 64
+python main.py ./config_HoloGAN.json --dataset celebA --input_fname_pattern ".jpg" --crop input_height 108 --output_height 64
 ```
 Help with config_HoloGAN.json
 
