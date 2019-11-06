@@ -29,6 +29,7 @@ flags.DEFINE_boolean("rotate_azimuth", False, "Sample images with varying azimut
 flags.DEFINE_boolean("rotate_elevation", False, "Sample images with varying elevation")
 FLAGS = flags.FLAGS
 
+
 def main(_):
   pp.pprint(flags.FLAGS.__flags)
   if FLAGS.input_width is None:
@@ -41,30 +42,30 @@ def main(_):
     os.makedirs(OUTPUT_DIR)
 
   run_config = tf.ConfigProto()
-  run_config.gpu_options.allow_growth=True
+  run_config.gpu_options.allow_growth = True
   print("FLAGs " + str(FLAGS.dataset))
   with tf.Session(config=run_config) as sess:
-    model = HoloGAN(
-        sess,
-        input_width=FLAGS.input_width,
-        input_height=FLAGS.input_height,
-        output_width=FLAGS.output_width,
-        output_height=FLAGS.output_height,
-        dataset_name=FLAGS.dataset,
-        input_fname_pattern=FLAGS.input_fname_pattern,
-        crop=FLAGS.crop)
+      model = HoloGAN(
+          sess,
+          input_width=FLAGS.input_width,
+          input_height=FLAGS.input_height,
+          output_width=FLAGS.output_width,
+          output_height=FLAGS.output_height,
+          dataset_name=FLAGS.dataset,
+          input_fname_pattern=FLAGS.input_fname_pattern,
+          crop=FLAGS.crop)
 
-    model.build(cfg['build_func'])
+      model.build(cfg['build_func'])
 
-    show_all_variables()
+      show_all_variables()
 
-    if FLAGS.train:
-        train_func = eval("model." + (cfg['train_func']))
-        train_func(FLAGS)
-    else:
-      if not model.load(LOGDIR)[0]:
-        raise Exception("[!] Train a model first, then run test mode")
-      model.sample_HoloGAN(FLAGS)
+      if FLAGS.train:
+          train_func = eval("model." + (cfg['train_func']))
+          train_func(FLAGS)
+      else:
+          if not model.load(LOGDIR)[0]:
+              raise Exception("[!] Train a model first, then run test mode")
+          model.sample_HoloGAN(FLAGS)
 
 
 if __name__ == '__main__':

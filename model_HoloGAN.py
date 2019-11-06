@@ -7,8 +7,8 @@ import shutil
 
 
 with open(sys.argv[1], 'r') as fh:
-    cfg=json.load(fh)
-IMAGE_PATH       = cfg['image_path']
+    cfg = json.load(fh)
+IMAGE_PATH = cfg['image_path']
 OUTPUT_DIR = cfg['output_dir']
 LOGDIR = os.path.join(OUTPUT_DIR, "log")
 
@@ -23,27 +23,25 @@ from tools.model_utils import transform_voxel_to_match_image
 
 class HoloGAN(object):
   def __init__(self, sess, input_height=108, input_width=108, crop=True,
-         output_height=64, output_width=64,
-         gf_dim=64, df_dim=64,
-         c_dim=3, dataset_name='lsun',
-         input_fname_pattern='*.webp'):
+         output_height=64, output_width=64, gf_dim=64, df_dim=64,
+         c_dim=3, dataset_name='lsun', input_fname_pattern='*.webp'):
 
-    self.sess = sess
-    self.crop = crop
+      self.sess = sess
+      self.crop = crop
 
-    self.input_height = input_height
-    self.input_width = input_width
-    self.output_height = output_height
-    self.output_width = output_width
+      self.input_height = input_height
+      self.input_width = input_width
+      self.output_height = output_height
+      self.output_width = output_width
 
-    self.gf_dim = gf_dim
-    self.df_dim = df_dim
-    self.c_dim = c_dim
+      self.gf_dim = gf_dim
+      self.df_dim = df_dim
+      self.c_dim = c_dim
 
-    self.dataset_name = dataset_name
-    self.input_fname_pattern = input_fname_pattern
-    self.data = glob.glob(os.path.join(IMAGE_PATH, self.input_fname_pattern))
-    self.checkpoint_dir = LOGDIR
+      self.dataset_name = dataset_name
+      self.input_fname_pattern = input_fname_pattern
+      self.data = glob.glob(os.path.join(IMAGE_PATH, self.input_fname_pattern))
+      self.checkpoint_dir = LOGDIR
 
   def build(self, build_func_name):
       build_func = eval("self." + build_func_name)
@@ -141,18 +139,20 @@ class HoloGAN(object):
 
       if config.dataset == "cats" or config.dataset == "cars":
           sample_images = [get_image(sample_file,
-                                    input_height=self.input_height,
-                                    input_width=self.input_width,
-                                    resize_height=self.output_height,
-                                    resize_width=self.output_width,
-                                    crop=False) for sample_file in sample_files]
+                                     input_height=self.input_height,
+                                     input_width=self.input_width,
+                                     resize_height=self.output_height,
+                                     resize_width=self.output_width,
+                                     crop=False)
+                                     for sample_file in sample_files]
       else:
           sample_images = [get_image(sample_file,
-                                    input_height=self.input_height,
-                                    input_width=self.input_width,
-                                    resize_height=self.output_height,
-                                    resize_width=self.output_width,
-                                    crop=True) for sample_file in sample_files]
+                                     input_height=self.input_height,
+                                     input_width=self.input_width,
+                                     resize_height=self.output_height,
+                                     resize_width=self.output_width,
+                                     crop=True)
+                                     for sample_file in sample_files]
 
       counter = 1
       start_time = time.time()
@@ -177,29 +177,31 @@ class HoloGAN(object):
               batch_files = self.data[idx * cfg['batch_size']:(idx + 1) * cfg['batch_size']]
               if config.dataset == "cats" or config.dataset == "cars":
                   batch_images = [get_image(batch_file,
-                                    input_height=self.input_height,
-                                    input_width=self.input_width,
-                                    resize_height=self.output_height,
-                                    resize_width=self.output_width,
-                                    crop=False) for batch_file in batch_files]
+                                            input_height=self.input_height,
+                                            input_width=self.input_width,
+                                            resize_height=self.output_height,
+                                            resize_width=self.output_width,
+                                            crop=False)
+                                  for batch_file in batch_files]
               else:
                   batch_images = [get_image(batch_file,
-                                    input_height=self.input_height,
-                                    input_width=self.input_width,
-                                    resize_height=self.output_height,
-                                    resize_width=self.output_width,
-                                    crop=self.crop) for batch_file in batch_files]
+                                            input_height=self.input_height,
+                                            input_width=self.input_width,
+                                            resize_height=self.output_height,
+                                            resize_width=self.output_width,
+                                            crop=self.crop)
+                                  for batch_file in batch_files]
 
               batch_z = self.sampling_Z(cfg['z_dim'], str(cfg['sample_z']))
               batch_view = self.gen_view_func(cfg['batch_size'],
-                                       cfg['ele_low'], cfg['ele_high'],
-                                       cfg['azi_low'], cfg['azi_high'],
-                                       cfg['scale_low'], cfg['scale_high'],
-                                       cfg['x_low'], cfg['x_high'],
-                                       cfg['y_low'], cfg['y_high'],
-                                       cfg['z_low'], cfg['z_high'],
-                                       with_translation=False,
-                                       with_scale=to_bool(str(cfg['with_translation'])))
+                                              cfg['ele_low'], cfg['ele_high'],
+                                              cfg['azi_low'], cfg['azi_high'],
+                                              cfg['scale_low'], cfg['scale_high'],
+                                              cfg['x_low'], cfg['x_high'],
+                                              cfg['y_low'], cfg['y_high'],
+                                              cfg['z_low'], cfg['z_high'],
+                                              with_translation=False,
+                                              with_scale=to_bool(str(cfg['with_translation'])))
 
               feed = {self.inputs: batch_images,
                       self.z: batch_z,
@@ -207,13 +209,13 @@ class HoloGAN(object):
                       self.d_lr_in: d_lr,
                       self.g_lr_in: g_lr}
               # Update D network
-              _, summary_str = self.sess.run([d_optim, self.d_sum],feed_dict=feed)
+              _, summary_str = self.sess.run([d_optim, self.d_sum], feed_dict=feed)
               self.writer.add_summary(summary_str, counter)
               # Update G network
               _, summary_str = self.sess.run([g_optim, self.g_sum], feed_dict=feed)
               self.writer.add_summary(summary_str, counter)
               # Run g_optim twice
-              _, summary_str = self.sess.run([g_optim, self.g_sum],  feed_dict=feed)
+              _, summary_str = self.sess.run([g_optim, self.g_sum], feed_dict=feed)
               self.writer.add_summary(summary_str, counter)
 
               errD_fake = self.d_loss_fake.eval(feed)
@@ -534,19 +536,18 @@ class HoloGAN(object):
   @property
   def model_dir(self):
     return "{}_{}_{}".format(
-        self.dataset_name,
-        self.output_height, self.output_width)
+            self.dataset_name, self.output_height, self.output_width)
 
   def save(self, checkpoint_dir, step):
     model_name = "HoloGAN.model"
     checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir)
 
     if not os.path.exists(checkpoint_dir):
-      os.makedirs(checkpoint_dir)
+        os.makedirs(checkpoint_dir)
 
     self.saver.save(self.sess,
-            os.path.join(checkpoint_dir, model_name),
-            global_step=step)
+                    os.path.join(checkpoint_dir, model_name),
+                    global_step=step)
 
   def load(self, checkpoint_dir):
     import re
@@ -555,13 +556,11 @@ class HoloGAN(object):
 
     ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
     if ckpt and ckpt.model_checkpoint_path:
-      ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
-      self.saver.restore(self.sess, os.path.join(checkpoint_dir, ckpt_name))
-      counter = int(next(re.finditer("(\d+)(?!.*\d)",ckpt_name)).group(0))
-      print(" [*] Success to read {}".format(ckpt_name))
-      return True, counter
+        ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
+        self.saver.restore(self.sess, os.path.join(checkpoint_dir, ckpt_name))
+        counter = int(next(re.finditer("(\d+)(?!.*\d)",ckpt_name)).group(0))
+        print(" [*] Success to read {}".format(ckpt_name))
+        return True, counter
     else:
-      print(" [*] Failed to find a checkpoint")
-      return False, 0
-
-
+        print(" [*] Failed to find a checkpoint")
+        return False, 0
