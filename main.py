@@ -43,7 +43,7 @@ def main(_):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    un_config = tf.ConfigProto()
+    run_config = tf.ConfigProto()
     run_config.gpu_options.allow_growth = True
     print('FLAGs ' + str(FLAGS.dataset))
     with tf.Session(config=run_config) as sess:
