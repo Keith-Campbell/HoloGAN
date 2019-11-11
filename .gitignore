@@ -4,4 +4,5 @@
 __pycache__/
 
 *.pyc
-HoloGAN/
+HoloGAN*/
+chairs_textured_all/
