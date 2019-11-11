@@ -21,7 +21,7 @@ International Conference on Computer Vision (ICCV) 2019
 
 ## Dataset
 
-CelebA:  http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html 
+CelebA: http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html 
 
 LSUN: Dataset and pre-process code  https://github.com/fyu/lsun 
 
@@ -50,13 +50,13 @@ batch_size:
 max_epochs:
 			Number of epochs to train. Defaults is 50.
 epoch_step:
-			Number of epochs to train before starting to decrease the learning 			   rate. Default is 25.
+			Number of epochs to train before starting to decrease the learning rate. Default is 25.
 z_dim:
 			Dimension of the noise vector. Defaults is 128.
 d_eta:
-			Learning rate of the discriminator.Default is 0.0001
+			Learning rate of the discriminator. Default is 0.0001
 g_eta:
-			Learning rate of the generator.Default is 0.0001
+			Learning rate of the generator. Default is 0.0001
 beta1:
 			Beta 1 for the Adam optimiser. Default is 0.5
 beta2:
@@ -80,9 +80,9 @@ add_D_noise:
 DStyle_lambda:
 			Lambda for the style discriminator loss. Default is 1.0
 lambda_latent:
-			Lambda for the identity regulariser.Useful for training images at 			  128.Default is 0.0.
+			Lambda for the identity regulariser.Useful for training images at 128. Default is 0.0.
 ele_low:
-    		Default is 70.
+			Default is 70.
 ele_high:
 			Default is 110.
 azi_low:
@@ -126,4 +126,3 @@ If you use this code for your research, please cite our paper
  year = {2019} 
 }
 ```
-
