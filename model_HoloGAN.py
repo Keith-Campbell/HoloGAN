@@ -307,7 +307,7 @@ class HoloGAN(object):
         else:
             return np.random.normal(0, 1, (cfg['batch_size'], z_dim))
 
-    def linear_classifier(self, features, scope = 'lin_class', stddev=0.02, reuse=False):
+    def linear_classifier(self, features, scope='lin_class', stddev=0.02, reuse=False):
         with tf.variable_scope(scope) as sc:
             w = tf.get_variable('w', [features.get_shape()[-1], 1],
                                 initializer=tf.random_normal_initializer(stddev=stddev))
